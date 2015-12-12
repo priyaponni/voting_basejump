@@ -9,6 +9,8 @@ angular.module('approutes',[]).config(['$routeProvider', '$locationProvider', fu
 	 }).when('/user_home', {
 	 	templateUrl : '/public/views/user_home.html',
 	 	controller : 'UserHomeController'
+	 }).when('/logout', {
+	 	controller : 'LogoutController'
 	 })
 	 $locationProvider.html5Mode(true);
 }]);

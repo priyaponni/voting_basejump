@@ -13,12 +13,27 @@ app.factory('UserAuthService', ['$rootScope', function($rootScope){
     }
 }]);
 
-app.controller('NavController', ['$scope', '$http', 'UserAuthService', function($scope, $http, userAuth){
+app.controller('NavController', ['$scope', '$http', '$location', 'UserAuthService', function($scope, $http, $location, userAuth){
     $scope.$on('handleUserLogin', function(event, args){
        $scope.isLoggedIn = args;
     });
     $scope.isLoggedIn = userAuth.isLoggedIn;
+    
+    $scope.logout = function(){
+        $http.get('/api/logout').then(function(response){
+            userAuth.broadcast(false);
+            $location.path('/');
+        });
+    }
 }])
+
+app.controller('LogoutController', ['$location', '$http', 'UserAuthService', function($location, $http, userAuth){
+    $http.get('/api/logout').then(function(response){
+        userAuth.broadcast(false);
+        $location.path('/');
+    })
+    
+}]);
 
 app.controller('LoginController', ['$scope', '$http', '$location', 'UserAuthService', function($scope, $http, $location, userAuth){
     $scope.email = '';
