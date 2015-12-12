@@ -1,0 +1,1 @@
+angular.module('votingApp', ['ngRoute', 'approutes', 'Voting']);

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html>
+    <head> 
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+ 	    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+ 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+    	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script><!-- load angular -->
+    	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
+	    <script src="controllers/voting_client.js" ></script>
+	    <script src="controllers/angular/app.js" ></script>
+	    <script src="controllers/angular/approutes.js" ></script>
+ 	    <link href="/public/css/voting.css" rel="stylesheet" type="text/css">
+        <title> Voting App</title>
+    </head>
+    <body ng-app="votingApp">
+        <div class="container">
+            
+            <div ng-controller="NavController">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <nav class="navbar navbar-default">
+                            <div class="navbar-header">
+                                 <a href="/" class="navbar-brand">  <strong>Come, Lets Vote!</strong> </a>
+                            </div>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li> <a href="/" ng-hide="isLoggedIn"> Login </a> </li>
+                                <li> <a href="/signup" ng-hide="isLoggedIn"> Sign Up</a></li>
+                                <li> <a href="/myPolls" ng-show="isLoggedIn"> MyPolls </a></li>
+                                <li> <a href="/logout" ng-show="isLoggedIn"> Logout </a></li>
+                            </ul>
+                        </nav>
+                        
+                    </div>
+                </div>
+            </div>
+            <div ng-view>
+		 	</div>
+        </div>
+    </body>
+</html>
