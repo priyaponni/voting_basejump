@@ -2,9 +2,12 @@
 
 var path = process.cwd();
 var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
+var LoginHandler = require(path + '/app/controllers/login_server.js');
+
 
 module.exports = function (app, passport) {
 
+	var userId;
 	function isLoggedIn (req, res, next) {
 		if (req.isAuthenticated()) {
 			return next();
@@ -14,10 +17,43 @@ module.exports = function (app, passport) {
 	}
 
 	var clickHandler = new ClickHandler();
+	var loginHandler = new LoginHandler();
 
 	app.route('/')
 		.get(isLoggedIn, function (req, res) {
-			res.sendFile(path + '/public/index.html');
+			res.sendFile(path + '/public/index_voting.html');
+		});
+	
+	app.route('/signup')
+		.post(function(req, res){
+			console.log('***rew ' + req);
+			loginHandler.signup(req.body.name, req.body.email, req.body.password, function(err, response){
+				console.log('*** Response ' + response);
+				req.session.user = response;
+				res.json(response);
+			});
+		});
+		
+	app.route('/api/login')
+		.post(function(req, res){
+			loginHandler.login(req.body.email, req.body.password, function(err, response){
+				console.log('ERROR' + err);
+				console.log('RESPONSE ' + response);
+				req.session.user = response;
+				res.json(response);
+			});
+		});
+		
+	app.route('/api/logout')
+		.get(function(req, res){
+			req.session.user = null;
+			res.sendFile(path + '/public/index_voting.html');
+		});
+	
+	app.route('/api/getUserInfo')
+		.get(function(req, res){
+			console.log('**' + req.session.user);
+			res.json(req.session.user);
 		});
 
 	app.route('/login')
@@ -54,4 +90,9 @@ module.exports = function (app, passport) {
 		.get(isLoggedIn, clickHandler.getClicks)
 		.post(isLoggedIn, clickHandler.addClick)
 		.delete(isLoggedIn, clickHandler.resetClicks);
+		
+	app.route('*').get(function(req, res){
+		res.sendFile(path + '/public/index_voting.html')
+	});
+
 };
