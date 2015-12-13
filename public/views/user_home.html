@@ -1,7 +1,24 @@
-<div ng-controller="UserHomeController">
+<div ng-controller="CreatePollController">
     
     Inside route....
     <div ng-repeat="(key,value) in userInfo">
         {{key}} --- {{value}}
     </div>
+    
+    New Poll
+    <form name="pollform" >
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Poll question..." ng-model="poll.question" required>
+        </div>
+        <div class="form-group">
+            <label>Choices</label>
+            {{ poll.choices }}
+            <div ng-repeat="choice in poll.choices">
+                <input type="text" class="form-control" placeholder="Choice $index" ng-model="choice.text" required /> 
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" ng-click="addChoice()" > Add choice </button>
+        <button type="submit" class="btn btn-primary" ng-click="createPoll()" > Create Poll </button>
+    </form>
+    
 </div>

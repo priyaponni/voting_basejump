@@ -3,6 +3,7 @@
 var path = process.cwd();
 var ClickHandler = require(path + '/app/controllers/clickHandler.server.js');
 var LoginHandler = require(path + '/app/controllers/login_server.js');
+var PollHandler = require(path + '/app/controllers/poll_handler.js');
 
 
 module.exports = function (app, passport) {
@@ -12,15 +13,16 @@ module.exports = function (app, passport) {
 		if (req.isAuthenticated()) {
 			return next();
 		} else {
-			res.redirect('/login');
+			res.sendFile(path + '/public/index_voting.html');
 		}
 	}
 
 	var clickHandler = new ClickHandler();
 	var loginHandler = new LoginHandler();
+	var pollHandler = new PollHandler();
 
 	app.route('/')
-		.get(isLoggedIn, function (req, res) {
+		.get(function (req, res) {
 			res.sendFile(path + '/public/index_voting.html');
 		});
 	
@@ -54,6 +56,17 @@ module.exports = function (app, passport) {
 		.get(function(req, res){
 			console.log('**' + req.session.user);
 			res.json(req.session.user);
+		});
+		
+	app.route('/api/createPoll')
+		.post(function(req, res){
+			console.log('/api/createPoll/req.body.pollData' + JSON.stringify(req.body.pollData));
+			pollHandler.createPoll(req.session.user._id, req.body.pollData, function(err, response){
+				console.log('/api/createPoll');
+				console.log('ERROR ' + err);
+				console.log('response  : ' + response );
+				res.json(response);
+			});
 		});
 
 	app.route('/login')

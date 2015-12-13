@@ -74,8 +74,8 @@ app.controller('SignUpController', ['$scope', '$location', 'UserAuthService', fu
     }
 }]);
 
-app.controller('UserHomeController', ['$scope', '$http', function($scope, $http){
-    $scope.userInfo = 'lk';
+app.controller('CreatePollController', ['$scope', '$http', function($scope, $http){
+    $scope.userInfo = '';
     
     $http.get('/api/getUserInfo').then(function(response){
         console.log('** Response' + response);
@@ -84,5 +84,28 @@ app.controller('UserHomeController', ['$scope', '$http', function($scope, $http)
         }
         $scope.userInfo = response.data;
     });
+    
+    $scope.poll = {};
+    
+    $scope.poll.question = 'question';
+    $scope.poll.choices = [{text:''}, {text:''}];
+    
+    $scope.poll.addChoice = function(value){
+        $scope.poll.choices.push({text: value});
+    }
+    
+    $scope.createPoll = function(){
+        if($scope.pollform.$valid){
+            
+            var pollData = {
+                question: $scope.poll.question, 
+                choices: $scope.poll.choices
+            };
+            
+            $http.post('/api/createPoll', {pollData : pollData}).then(function(response){
+               console.log('response for create poll ' + response );
+            });
+        }
+    }
     
 }]);

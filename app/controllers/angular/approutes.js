@@ -8,7 +8,7 @@ angular.module('approutes',[]).config(['$routeProvider', '$locationProvider', fu
 	    controller : 'SignUpController'
 	 }).when('/user_home', {
 	 	templateUrl : '/public/views/user_home.html',
-	 	controller : 'UserHomeController'
+	 	controller : 'CreatePollController'
 	 }).when('/logout', {
 	 	controller : 'LogoutController'
 	 })
