@@ -11,6 +11,16 @@ angular.module('approutes',[]).config(['$routeProvider', '$locationProvider', fu
 	 	controller : 'CreatePollController'
 	 }).when('/logout', {
 	 	controller : 'LogoutController'
+	 }).when('/:user_id/poll/:poll_id', {
+	 	templateUrl: '/public/views/poll.html',
+	 	controller : 'PollDetailsController',
+	 	resolve: {
+	 		delay : function($q, $timeout){
+	 			var delay = $q.defer;
+	 			$timeout(delay.resolve, 1000);
+	 			return delay.promise;
+	 		}
+	 	}
 	 })
 	 $locationProvider.html5Mode(true);
 }]);

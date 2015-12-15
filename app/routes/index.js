@@ -22,7 +22,7 @@ module.exports = function (app, passport) {
 	var pollHandler = new PollHandler();
 
 	app.route('/')
-		.get(function (req, res) {
+		.get( function (req, res) {
 			res.sendFile(path + '/public/index_voting.html');
 		});
 	
@@ -69,6 +69,20 @@ module.exports = function (app, passport) {
 			});
 		});
 
+	app.route('/api/poll/:pollId')
+		.get(function(req, res){
+			console.log(req.params);
+			pollHandler.getPoll(req.params.pollId, function(err, response){
+				if(err){
+					res.writeHead({status : 500});
+					res.end(err);
+				}
+				else{
+					res.json(response);
+				}
+			});
+		});
+	
 	app.route('/login')
 		.get(function (req, res) {
 			res.sendFile(path + '/public/login.html');

@@ -36,13 +36,14 @@ app.controller('LogoutController', ['$location', '$http', 'UserAuthService', fun
 }]);
 
 app.controller('LoginController', ['$scope', '$http', '$location', 'UserAuthService', function($scope, $http, $location, userAuth){
-    $scope.email = '';
-    $scope.password = '';
+    $scope.email = 'dhar@gmail.com';
+    $scope.password = '123';
     $scope.login = function(){
         if($scope.login_form.$valid){
             $http.post('/api/login', {email: $scope.email, password: $scope.password}).then(function(response){
                 console.log('Logged in --- ' + response);
                 userAuth.broadcast(true);
+                //$location.path("/" +response._id +"home");
                 $location.path("/user_home");
             });
         }
@@ -74,7 +75,7 @@ app.controller('SignUpController', ['$scope', '$location', 'UserAuthService', fu
     }
 }]);
 
-app.controller('CreatePollController', ['$scope', '$http', function($scope, $http){
+app.controller('CreatePollController', ['$scope', '$http', '$location', function($scope, $http, $location){
     $scope.userInfo = '';
     
     $http.get('/api/getUserInfo').then(function(response){
@@ -87,7 +88,7 @@ app.controller('CreatePollController', ['$scope', '$http', function($scope, $htt
     
     $scope.poll = {};
     
-    $scope.poll.question = 'question';
+    $scope.poll.question = '';
     $scope.poll.choices = [{text:''}, {text:''}];
     
     $scope.poll.addChoice = function(value){
@@ -96,16 +97,32 @@ app.controller('CreatePollController', ['$scope', '$http', function($scope, $htt
     
     $scope.createPoll = function(){
         if($scope.pollform.$valid){
-            
+            console.log('')
             var pollData = {
                 question: $scope.poll.question, 
                 choices: $scope.poll.choices
             };
             
             $http.post('/api/createPoll', {pollData : pollData}).then(function(response){
-               console.log('response for create poll ' + response );
+               console.log('response for create poll ' + JSON.stringify(response) );
+               $location.path("/"+response.data.created_by+"/poll/"+response.data._id);
             });
         }
     }
     
 }]);
+
+app.controller('PollDetailsController', ['$scope', '$http', '$location', '$routeParams', function($scope, $http, $location, $routeParams){
+    console.log('routeParams ----- ' + JSON.stringify($routeParams));
+    $scope.poll = {};
+    $scope.errorMessage = '';
+    $http.get('/api/poll/'+$routeParams["poll_id"]).then(function(response){
+        if(response.status == 200){
+            $scope.poll = response.data;
+        }
+        else{
+            $scope.errorMessage = response.data;
+        }
+    });
+}]);
+
