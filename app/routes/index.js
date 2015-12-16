@@ -68,11 +68,38 @@ module.exports = function (app, passport) {
 				res.json(response);
 			});
 		});
+		
+	app.route('/api/polls')
+		.get(function(req, res){
+			if(req.param('filterbyCurrentUser') == 'true'){
+				pollHandler.getPollsByUser(req.session.user._id, function(err, response){
+					console.log('getPollsByUser');
+					if(err){
+						res.writeHead({status : 500});
+						res.end(err);
+					}else{
+						res.json(response);
+					}
+				});
+			}
+			else{
+				pollHandler.getAllPolls(function(err, response){
+					console.log('getAllPolls');
+					if(err){
+						res.writeHead({status : 500});
+						res.end(err);
+					}else{
+						res.json(response);
+					}
+				});
+			}
+			
+		})
 
 	app.route('/api/poll/:pollId')
 		.get(function(req, res){
 			console.log(req.params);
-			pollHandler.getPoll(req.params.pollId, function(err, response){
+			pollHandler.getPollById(req.params.pollId, function(err, response){
 				if(err){
 					res.writeHead({status : 500});
 					res.end(err);

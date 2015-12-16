@@ -11,7 +11,7 @@ angular.module('approutes',[]).config(['$routeProvider', '$locationProvider', fu
 	 	controller : 'CreatePollController'
 	 }).when('/logout', {
 	 	controller : 'LogoutController'
-	 }).when('/:user_id/poll/:poll_id', {
+	 }).when('/poll/:poll_id', {
 	 	templateUrl: '/public/views/poll.html',
 	 	controller : 'PollDetailsController',
 	 	resolve: {
@@ -21,6 +21,9 @@ angular.module('approutes',[]).config(['$routeProvider', '$locationProvider', fu
 	 			return delay.promise;
 	 		}
 	 	}
+	 }).when('/polls', {
+	 	templateUrl : '/public/views/polls.html',
+	 	controller: 'UserPollsController'
 	 })
 	 $locationProvider.html5Mode(true);
 }]);

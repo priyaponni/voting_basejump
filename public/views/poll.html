@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="page-header">
+                <h1> Poll Data </h1>
+            </div>
+            <div class="alert alert-danger" ng-show="errorMessage.length">
+               {{errorMessage}}
+            </div>
+            <div>
+               
+                <dl class="dl-horizontal">
+                    <dt><b>Poll</b></dt>
+                    <dd>{{poll.question}}</dd>
+                    <dt><b>Votes</b></dt>
+                    <dd></dd>
+                    <span ng-repeat="choice in poll.choices">
+                        <dt>{{choice.value}}</dt>
+                        <dd>{{choice.voteCount}}</dd>
+                    </span>
+                </dl>
+            </div>
+            <a href="/polls" class="btn btn-default" > All Polls </a>
+        </div>
+    </div>
+</div>

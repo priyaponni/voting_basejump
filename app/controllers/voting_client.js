@@ -105,11 +105,44 @@ app.controller('CreatePollController', ['$scope', '$http', '$location', function
             
             $http.post('/api/createPoll', {pollData : pollData}).then(function(response){
                console.log('response for create poll ' + JSON.stringify(response) );
-               $location.path("/"+response.data.created_by+"/poll/"+response.data._id);
+               $location.path("/poll/"+response.data._id);
             });
         }
     }
     
+}]);
+
+app.controller('UserPollsController', ['$scope', '$http', '$location', function($scope, $http, $location){
+    $scope.polls = [];
+    $scope.errorMessage = '';
+    $scope.tab = 1;
+    $scope.setTab = function(tabnumber){
+        $scope.tab = tabnumber;
+        $scope.refreshData();
+    }
+    $scope.isSet = function(tabnumber){
+        return ($scope.tab == tabnumber);
+    }
+    $scope.refreshData = function(){
+        var api = '/api/polls';
+        if($scope.tab == 1){
+            api += '?filterbyCurrentUser=true'
+        }
+        else{
+            api += '?filterbyCurrentUser=false'
+        }
+        console.log('UserPollsController : ' + api)
+        $http.get(api).then(function(response){
+            if(response.status == 200){
+                console.log('UserPollsController --- ' + response.data);
+                $scope.polls = response.data;
+            }
+            else{
+                $scope.errorMessage = response.data;
+            }
+        });
+    }
+    $scope.refreshData();
 }]);
 
 app.controller('PollDetailsController', ['$scope', '$http', '$location', '$routeParams', function($scope, $http, $location, $routeParams){
