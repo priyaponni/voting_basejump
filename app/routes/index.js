@@ -73,9 +73,8 @@ module.exports = function (app, passport) {
 		.get(function(req, res){
 			if(req.param('filterbyCurrentUser') == 'true'){
 				pollHandler.getPollsByUser(req.session.user._id, function(err, response){
-					console.log('getPollsByUser');
 					if(err){
-						res.writeHead({status : 500});
+						res.writeHead({statusCode : 500});
 						res.end(err);
 					}else{
 						res.json(response);
@@ -84,9 +83,8 @@ module.exports = function (app, passport) {
 			}
 			else{
 				pollHandler.getAllPolls(function(err, response){
-					console.log('getAllPolls');
 					if(err){
-						res.writeHead({status : 500});
+						res.writeHead({statusCode : 500});
 						res.end(err);
 					}else{
 						res.json(response);
@@ -95,13 +93,14 @@ module.exports = function (app, passport) {
 			}
 			
 		})
+	
 
 	app.route('/api/poll/:pollId')
 		.get(function(req, res){
 			console.log(req.params);
 			pollHandler.getPollById(req.params.pollId, function(err, response){
 				if(err){
-					res.writeHead({status : 500});
+					res.writeHead({statusCode : 500});
 					res.end(err);
 				}
 				else{
@@ -109,6 +108,27 @@ module.exports = function (app, passport) {
 				}
 			});
 		});
+		
+	app.route('/api/poll/:pollId/addVote')
+		.post(function(req, res){
+			pollHandler.addVote(req.session.user._id, req.params.pollId, req.body.choice, function(err, response){
+				if(err){
+					res.writeHead({statusCode : 500});
+					res.end(err);
+				}
+				else{
+					pollHandler.getPollById(req.params.pollId, function(err, response){
+						if(err){
+							res.writeHead({statusCode : 500});
+							res.end(err);
+						}
+						else{
+							res.json(response);
+						}
+					});		
+				}
+			})
+		})
 	
 	app.route('/login')
 		.get(function (req, res) {

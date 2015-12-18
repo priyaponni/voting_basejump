@@ -1,18 +1,20 @@
 <div ng-controller="UserPollsController">
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3">
-            <div class=".text-center page-header">
-               <h1> My Polls </h1>
-            </div>
+            
             
             <ul class="nav nav-pills">
                 <li ng-class="{active : isSet(1)}"><a href="" ng-click="setTab(1)">My Polls</a></li>
                 <li ng-class="{active : isSet(2)}"><a href="" ng-click="setTab(2)">All Polls</a></li>
+                
+                <li class="pull-right"><input ng-model="filterPollText" class="form-control" placeholder="Filter polls..."></li>
+            
             </ul>
+            
             
             <table class="table table-striped table-hover">
                 <tbody>
-                    <tr ng-repeat ="poll in polls" >
+                    <tr ng-repeat ="poll in polls | reverse | filter:filterPollText" >
                         <td>{{poll.question}}</td>
                         <td>
                             <a href="/poll/{{poll._id}}" role="button"> Show </a>

@@ -39,7 +39,7 @@ function PollHandler(){
             if(err){
                 callback(err);
             }else{
-                callback(null, docs.splice(0,2));
+                callback(null, docs);
             }
         });
     }
@@ -55,6 +55,17 @@ function PollHandler(){
         })
     }
     
+    this.addVote = function(userId, pollId, choice, callback){
+        console.log('pollHandler - addVote : choice' + userId + ' -- ' + pollId + ' -- ' + choice );
+        Poll.findOne({_id : pollId,  'choices.value': choice}, function(err, doc){
+            console.log('PollHandler - find ' + JSON.stringify(doc));
+        })
+        
+        Poll.update({_id : pollId, 'choices.value': choice}, { $inc: {'choices.$.voteCount' : 1}, $push : {'choices.$.voters': userId}}, function(err, result){
+            console.log('PollHandler addVote ' + JSON.stringify(result));
+            callback(err, result);
+        })
+    }
 }
 
 module.exports = PollHandler;

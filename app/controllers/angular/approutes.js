@@ -3,6 +3,8 @@ angular.module('approutes',[]).config(['$routeProvider', '$locationProvider', fu
 	.when('/',{
 	    templateUrl : '/public/views/login.html',
 	    controller : 'LoginController'
+	 }).when('/about', {
+	 	templateUrl : '/public/views/about.html'
 	 }).when('/signup' ,{
 	    templateUrl : '/public/views/signup.html',
 	    controller : 'SignUpController'

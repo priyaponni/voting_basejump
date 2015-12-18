@@ -1,0 +1,15 @@
+.banner_div {
+    text-align : center;
+    color : white;
+    background-color : #3333ff;
+    margin : -20px 0px 10px 0px ;
+    padding : 20px 15px;
+}
+
+.page_bottom {
+    padding-bottom : 50px;
+}
+
+.add_margin {
+    margin-bottom : 5px;
+}
