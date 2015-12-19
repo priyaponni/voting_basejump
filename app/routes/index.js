@@ -6,7 +6,7 @@ var LoginHandler = require(path + '/app/controllers/login_server.js');
 var PollHandler = require(path + '/app/controllers/poll_handler.js');
 
 
-module.exports = function (app, passport) {
+module.exports = function (app) {
 
 	var userId;
 	function isLoggedIn (req, res, next) {
@@ -150,15 +150,6 @@ module.exports = function (app, passport) {
 		.get(isLoggedIn, function (req, res) {
 			res.json(req.user.github);
 		});
-
-	app.route('/auth/github')
-		.get(passport.authenticate('github'));
-
-	app.route('/auth/github/callback')
-		.get(passport.authenticate('github', {
-			successRedirect: '/',
-			failureRedirect: '/login'
-		}));
 
 	app.route('/api/:id/clicks')
 		.get(isLoggedIn, clickHandler.getClicks)
