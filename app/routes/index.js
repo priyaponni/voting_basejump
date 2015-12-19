@@ -28,9 +28,7 @@ module.exports = function (app) {
 	
 	app.route('/signup')
 		.post(function(req, res){
-			console.log('***rew ' + req);
 			loginHandler.signup(req.body.name, req.body.email, req.body.password, function(err, response){
-				console.log('*** Response ' + response);
 				req.session.user = response;
 				res.json(response);
 			});

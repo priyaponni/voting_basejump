@@ -13,3 +13,31 @@
 .add_margin {
     margin-bottom : 5px;
 }
+
+.about {
+    padding-top : 90px;
+}
+
+.about .fa-medium{
+    font-size : 5em;
+}
+.about .fa-small{
+    font-size : 2em;
+    padding-top : 10px;
+}
+
+.about div{
+    text-align : center;
+}
+
+.fa-bolt {
+    color : yellow;
+}
+
+.fa-heart {
+    color : red;
+}
+
+.fa-magic {
+    color : green;
+}
