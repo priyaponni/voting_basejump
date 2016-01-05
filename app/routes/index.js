@@ -37,10 +37,13 @@ module.exports = function (app) {
 	app.route('/api/login')
 		.post(function(req, res){
 			loginHandler.login(req.body.email, req.body.password, function(err, response){
-				console.log('ERROR' + err);
-				console.log('RESPONSE ' + response);
-				req.session.user = response;
-				res.json(response);
+				if(err){
+					res.status(404);
+					res.send(err);
+				}else{
+					req.session.user = response;
+					res.json(response);
+				}
 			});
 		});
 		

@@ -3,6 +3,9 @@
     <form name="login_form">
         <div class="row">
             <div class="col-sm-6 col-sm-offset-3">
+                 <div data-ng-show="showError" class="alert alert-danger"> <strong> Error! </strong> {{ errorMessage}} </div>
+               
+                
                 <div class="form-group" show-errors>
                     <input type="text" class="form-control" placeholder="Email" ng-model="email" required>
                 </div>

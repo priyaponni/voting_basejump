@@ -20,14 +20,13 @@ function LoginHandler(){
     
     this.login = function(email, password, callback){
         User.findOne({email: email}, function(err, doc){
-            console.log('***' + doc);
-            if(err)
-                callback('NOT FOUND');
+            if(err || !doc)
+                callback('Username not found');
             else{
                 if(doc.password == password){
                     callback(null, doc);
                 }else{
-                    callback('WRONG PASSWORD');
+                    callback('Password doesn\'t match');
                 }
             }
         })

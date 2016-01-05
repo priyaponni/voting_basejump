@@ -51,11 +51,17 @@ app.controller('LogoutController', ['$location', '$http', 'UserAuthService', fun
 app.controller('LoginController', ['$scope', '$http', '$location', 'UserAuthService', function($scope, $http, $location, userAuth){
     $scope.email = '';
     $scope.password = '';
+     $scope.showError = false;
+    $scope.errorMessage = '';
     $scope.login = function(){
         if($scope.login_form.$valid){
-            $http.post('/api/login', {email: $scope.email, password: $scope.password}).then(function(response){
-                userAuth.broadcast({isloggedIn : true, userName : response.data.name, userId : response.data._id});
+            $http.post('/api/login', {email: $scope.email, password: $scope.password}).success(function(response){
+                $scope.showError = false;
+                userAuth.broadcast({isloggedIn : true, userName : response.name, userId : response._id});
                 $location.path("/user_home");
+            }).error(function(err){
+                $scope.showError = true;
+                $scope.errorMessage = err;
             });
         }
     };
