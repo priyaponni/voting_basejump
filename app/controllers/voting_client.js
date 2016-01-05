@@ -49,8 +49,8 @@ app.controller('LogoutController', ['$location', '$http', 'UserAuthService', fun
 }]);
 
 app.controller('LoginController', ['$scope', '$http', '$location', 'UserAuthService', function($scope, $http, $location, userAuth){
-    $scope.email = 'dhar@gmail.com';
-    $scope.password = '123';
+    $scope.email = '';
+    $scope.password = '';
     $scope.login = function(){
         if($scope.login_form.$valid){
             $http.post('/api/login', {email: $scope.email, password: $scope.password}).then(function(response){
@@ -74,7 +74,7 @@ app.controller('SignUpController', ['$scope', '$location', 'UserAuthService', fu
             $scope.showError = false;
             if($scope.password == $scope.confirmpassword){
                 $.post('/signup', {name: $scope.name, email : $scope.email, password : $scope.password }, function(response){
-                    userAuth.broadcast({isloggedIn : true, userName : response.data.name, userId : response.data._id});
+                    userAuth.broadcast({isloggedIn : true, userName : response.name, userId : response._id});
                     $scope.$apply(function() { $location.path("/user_home"); });
                 });
             }
